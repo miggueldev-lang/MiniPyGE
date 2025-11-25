@@ -1,0 +1,30 @@
+# === Python ===
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pys
+
+# === Pygame builds ===
+*.exe
+*.app
+dist/
+build/
+
+# === Virtual Environment ===
+venv/
+ENV/
+env/
+.venv/
+
+# === IDEs ===
+.vscode/
+.idea/
+*.code-workspace
+
+# === Logs ===
+*.log
+
+# === OS Lixo ===
+.DS_Store
+Thumbs.db
