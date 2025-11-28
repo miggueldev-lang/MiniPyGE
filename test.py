@@ -13,7 +13,7 @@ class TitleScene(Scene):
         for event in events:
             if event.type == pygame.KEYDOWN:
                 next_scene = self.number + 1 if self.number < 3 else 1
-                colors = [(1, 0, 0), (0, 255, 0), (0, 0, 255)]
+                colors = [(255, 0, 0), (0, 255, 0), (0, 0, 255)]
                 self.game.change_scene(TitleScene(self.game, next_scene, colors[next_scene - 1]))
     
     def draw(self, screen):
@@ -264,6 +264,6 @@ if __name__ == "__main__":
 
     pygame.init()
     game = Game()
-    game.change_scene(CollisionTestScene(game))
+    game.change_scene(TestPhysicsAndCamera(game))
     game.run()
     pygame.quit()
