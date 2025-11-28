@@ -1,6 +1,7 @@
 from engine.scene import Scene
 from engine.entity import Entity, EntityManager
 from engine.physics import PhysicsBody
+import pygame
 
 class TitleScene(Scene):
     def __init__(self, game, number=1, color=(30,30,30)):
@@ -47,7 +48,9 @@ class AssetsTestScene(Scene):
     def __init__(self, game):
         super().__init__(game)
         self.assets = game.assets
+        
         self.test_image = self.assets.load_image("example_image.png")
+        self.test_image = self.game.pygame.transform.scale(self.test_image, (self.game.width //2 , self.game.height//2))
         self.test_sound = self.assets.load_sound("example_music.mp3")
 
     def enter(self):
@@ -69,7 +72,7 @@ class AssetsTestScene(Scene):
     def draw(self, screen):
         screen.fill((50, 50, 50))
         if self.test_image:
-            screen.blit(self.test_image, (100, 100))
+            screen.blit(self.test_image, (180, 150))
 
 class FontTestScene(Scene):
     def enter(self):
@@ -264,6 +267,6 @@ if __name__ == "__main__":
 
     pygame.init()
     game = Game()
-    game.change_scene(TestPhysicsAndCamera(game))
+    game.change_scene(AssetsTestScene(game))
     game.run()
     pygame.quit()
