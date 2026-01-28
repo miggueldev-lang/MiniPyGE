@@ -3,6 +3,44 @@ from engine.entity import Entity, EntityManager
 from engine.physics import PhysicsBody
 import pygame
 
+class SceneSelector(Scene):
+    def __init__(self, game, scenes):
+        super().__init__(game)
+        self.scenes = scenes
+        self.buttons = []
+    
+    def enter(self):
+        self.buttons.clear()
+        y = 120
+
+        for name, callback in self.scenes.items():
+            text = self.font.render(name, True, (255, 255, 255))
+            rect = text.get_rect(center = (self.game.width // 2, y ))
+
+            self.buttons.append((rect, text, callback))
+            y += 80
+    
+    def handle_events(self, events):
+        for event in events:
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                mx, my = event.pos
+                for rect, text, callback in self.buttons:
+                    if rect.collidepoint(mx, my):
+                        callback()
+        
+    def draw(self, screen):
+        screen.fill(self.background_color)
+
+        title = self.font.render("Selecione uma cena de teste", True, (255, 255, 255))
+
+        screen.blit(title, (self.game.width // 2 - title.get_width() // 2, 40))
+        
+        for rect, text, callback in self.buttons:
+            bg = rect.inflate(20, 10)
+            pygame.draw.rect(screen, (100, 100, 100), bg, border_radius=6)
+            screen.blit(text, rect)
+        
+
 class TitleScene(Scene):
     def __init__(self, game, number=1, color=(30,30,30)):
         super().__init__(game)
@@ -267,6 +305,24 @@ if __name__ == "__main__":
 
     pygame.init()
     game = Game()
-    game.change_scene(AssetsTestScene(game))
+
+    game.scene_manager.add_scene("Physics + Camera Test", TestPhysicsAndCamera(game))
+    game.scene_manager.add_scene("Collision Test", CollisionTestScene(game))
+    game.scene_manager.add_scene("Entity Test", EntityTestScene(game))
+    game.scene_manager.add_scene("Font Test", FontTestScene(game))
+    game.scene_manager.add_scene("Assets Test", AssetsTestScene(game))
+    game.scene_manager.add_scene("Input Test", InputTestScene(game))
+
+    selector = SceneSelector(game, {
+        "Physics + Camera Test": lambda: game.scene_manager.change_scene("Physics + Camera Test"),
+        "Collision Test": lambda: game.scene_manager.change_scene("Collision Test"),
+        "Entity Test": lambda: game.scene_manager.change_scene("Entity Test"),
+        "Font Test": lambda: game.scene_manager.change_scene("Font Test"),
+        "Assets Test": lambda: game.scene_manager.change_scene("Assets Test"),
+        "Input Test": lambda: game.scene_manager.change_scene("Input Test"),
+    })
+    game.scene_manager.add_scene("Menu", selector)
+
+    game.scene_manager.change_scene("Menu")
     game.run()
     pygame.quit()

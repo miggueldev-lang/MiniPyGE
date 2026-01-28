@@ -1,14 +1,16 @@
 import pygame
 
-from engine.input import InputManeger
-from engine.assets import AssetsManeger
+from engine.input import InputManager
+from engine.assets import AssetsManager
 from engine.physics import PhysicsManager
-from engine.scene import Scene
+from engine.scene import SceneManager
 from engine.entity import EntityManager
 
 
 class Game:
     def  __init__(self, width=800, height=600, title="My Adventure Game"):
+        self.pygame = pygame
+
         self.width = width
         self.height = height
         self.title = title
@@ -19,11 +21,11 @@ class Game:
         self.clock = pygame.time.Clock()
         self.running = True
 
+        self.scene_manager = SceneManager(self)
         self.scene = None
-        self.pygame = pygame
 
-        self.input = InputManeger(pygame)
-        self.assets = AssetsManeger(pygame)
+        self.input = InputManager(pygame)
+        self.assets = AssetsManager(pygame)
         self.entities = EntityManager(self)
         self.physics = PhysicsManager()
     
@@ -39,19 +41,14 @@ class Game:
             if self.scene:
                 self.scene.handle_events(events)
                 self.input.update(events)
-            
-            if self.scene:
+
                 self.scene.update(dt)
-            
-            if self.scene:
+
+                self.physics.update()
+
                 self.scene.draw(self.screen)
+            
             
             pygame.display.flip()
         
         pygame.quit()
-    
-    def change_scene(self, scene):
-        if self.scene:
-            self.scene.exit()
-        self.scene = scene
-        self.scene.enter()

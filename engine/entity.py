@@ -33,10 +33,6 @@ class Entity:
         return self.hitbox.colliderect(other.hitbox)
 
     def update(self, dt):
-        # atualiza a fisica das entidades
-        if self.physics:
-            self.physics.update_physics()
-
         # sincroniza o rect com a nova posição
         self.rect.topleft = (self.x, self.y)
         # hitbox que sempre é carregada em cima do rect

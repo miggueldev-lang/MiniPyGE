@@ -11,8 +11,6 @@ class Scene:
 
         self.background_color = (30, 30, 30)
 
-
-    
     def enter(self):
         pass
 
@@ -28,5 +26,22 @@ class Scene:
     def draw(self, screen):
         screen.fill(self.background_color)
         self.entities.draw(screen)
-        self.game.physics.update()
+
+class SceneManager:
+    def __init__(self, game):
+        self.game = game
+        self.scenes = {}
+        self.current_scene = None
     
+    def add_scene(self, name: str, scene: Scene):
+        self.scenes[name] = scene
+    
+    def change_scene(self, name):
+        if self.current_scene:
+            self.current_scene.exit()
+        
+        self.current_scene = self.scenes.get(name)
+        
+        if self.current_scene:
+            self.game.scene = self.current_scene
+            self.current_scene.enter()

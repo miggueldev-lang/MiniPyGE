@@ -1,6 +1,6 @@
 import os
 
-class AssetsManeger:
+class AssetsManager:
     def __init__(self, pygame):
         self.pygame = pygame
         self.base_path = "assets/"

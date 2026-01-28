@@ -1,4 +1,4 @@
-class InputManeger:
+class InputManager:
     def __init__(self, pygame):
         self.pygame = pygame
 
